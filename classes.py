@@ -17,7 +17,7 @@ from constants import *
 # that message. A later improvement might see Portuguese added, or a braille
 # output added. In fact we could implement sending output to a printer
 # instead of a screen, or have them ATM interact via email, etc.
-class security():
+class Security():
     correct_pin = '1234'
     max_attempts = CONST_MAX_PIN_ATTEMPTS
 
@@ -37,7 +37,7 @@ class Bank():
         self.bankLanguage = language
         self.atmMachine = atmHardware(language)
         self.bankAccount = atmAccount()
-        self.security = security()
+        self.security = Security()
 
     # Conduct a fake transaction
     def businessProcess001FakeATMTransaction(self):
