@@ -1,5 +1,62 @@
+# Adding the PIN check (14 May '21)
 #
-# Commentary!
+# Review: the purpose was to adapt this code to behave like your original code.
+# 1. We reviewed a video of your code's behaviour and chose to reimplement the
+# PIN check
+# 2. The PIN check happens at a specific place in your code's flow: after the
+# welcome message and before the first transaction.
+# More properly we'd ask: is there any function that a real ATM has that doesn't
+# involve the PIN? And we'd answer yes: an ATM may scan a real bank card for
+# identity before checking the PIN. Thus, we wouldn't choose to *always* check
+# the PIN first, we would choose to mark off particular bits as code as not
+# being accessible until the PIN is checked. That means other bits of code could
+# be executed despite the PIN not being checked, which matches real behaviour.
+# In the meantime, we've elided that by always requiring the PIN check to match
+# your video.
+# 3. With the check always happening in the one place, I started by adding code
+# at that place - print("got here") - and testing that it showed up as expected
+# during a run
+# 4. Now that we know we're editing the right place in the code, and after a
+# brief detour to put the classes and constants in their own file, we considered
+# what kind of object checking the PIN involves and we decided on a class called
+# Security(): it knows what the PIN should be, how many attempts should be
+# allowed at guessing it, and knows how to test if the PIN is right.
+# 5. So we implemented implemented the security class and the whole
+# functionality of obtaining the guess and checking if it was correct. The "got
+# here" debug line was replaced with a call creating the class and calling the
+# check PIN method. We kept going with that method until its behaviour matched
+# what we wanted.
+# You can consider that this stage worked much like your own - developing the
+# behaviour in a straight-forward linear fashion.
+# 6. Once we were happy that my code matched the behaviour of your code
+# completely, we turned to integrating my code into my style.
+# 7. First we considered that 'checkPIN' shouldn't actually care about input and
+# outputs, only checking. To that end we made Security class belong to the Bank
+# class where we also created a new process businessProcess003CheckPin(). This
+# allowed us to move the input and output code into the atmHardware class, where
+# they belong.
+# 8. We then moved the constants used to the constants file, except for
+# correct_pin. As we know the correct PIN would vary according to the particular
+# user, we left it as is.
+# 9. Finally we matched up the new English constants with French constants and
+# refactored the existing code to support them.
+#
+# Were we doing this properly we would:
+# a. Add unit tests against Security(), Security.checkPin(),
+# Bank.businessProcess003CheckPin(), atmHardware.showRemainingAttempts() and
+# atmHardware.askForPiN().
+# Some programmers argue that unit tests should be done *before* writing the
+# code they test.
+# b. Have each protected business process method check for the security status
+# and call Security.checkPin() if required. This allows the ATM to have a
+# process for checking the card first, or perhaps cycling through advertising
+# onscreen, without needing a card to activate.
+#
+# Next time we should also start observing some of the Python style guide more
+# closely! https://www.python.org/dev/peps/pep-0008
+#
+#
+# Commentary! (12 May '21)
 #
 # Have a look through the code first and remember that it does exactly what
 # your code does. To the end-user, there's no difference at all. Think of it
